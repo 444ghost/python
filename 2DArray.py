@@ -11,7 +11,7 @@ def hourglassSum(arr):
         for j in range(4):
             local = arr[i][j] + arr[i][j + 1] + arr[i][j + 2] + arr[i + 1][j + 1] + arr[i + 2][j] + arr[i + 2][j + 1] + arr[i + 2][j + 2]
             if(local > maxHourGlassSum):
-                maxHourGlassSum = local
+                maxHourGlassSum = local # hey
     return maxHourGlassSum
 
 if __name__ == '__main__':
