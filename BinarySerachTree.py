@@ -22,13 +22,8 @@ class Solution:
     def getHeight(self, root):
         if root:
 
-            print("root.data = " + str(root.data))
-
             leftDepth = self.getHeight(root.left)
             rightDepth = self.getHeight(root.right)
-
-            print("leftDepth = " + str(leftDepth))
-            print("rightDepth = " + str(rightDepth))
 
             if leftDepth > rightDepth:
                 return leftDepth + 1
