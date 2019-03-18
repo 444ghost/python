@@ -1,55 +1,51 @@
 import can
-import os
-import time
-import datetime
-# from time import time as time2
-
+from datetime import datetime
 
 interface = "neovi"
 channel = 1
 
-bus = can.interface.Bus(channel=channel,
+bus = can.interface.Bus(channel=channel, # from the reference
                         bustype=interface,
-                        bitrate=500000)
+                        bitrate=500000) # BR 500k
                         # can_filters=[{"can_id": 0x0111, "can_mask": 0x7ff, "extended": False}])
 
 previousTime = 0
 currentTime = 0
 contents = []
+
+file = open(str(datetime.now().replace(second=0, microsecond=0)).replace(":", "-") + ".txt", "a")
+
 while(1):
 
-    message = bus.recv(1.0)
-    if message is not None:
-        # print(message)
-        messageList = str(message).strip().split(" ")
-        # print(messageList)
+    packet = bus.recv(1.0)
+
+    if packet is not None:
+
+        packetList = str(packet).strip().split(" ")
         line = []
-        for i in messageList:
+
+        for i in packetList:
             if len(i) != 0:
                 line.append(i)
-        currentTime = int(line[1].split(".")[0])
+
+        # currentTime = float(line[1].split(".")[0])
+        currentTime = float(line[1])
         contents.append(line)
-        if currentTime - previousTime > 0:
+
+        if currentTime - previousTime > 0.5:
             previousTime = currentTime
-            # os.system("cls")
-            memory = set()
+
             for i in reversed(contents):
-                if not i[3] in memory:
+                if i[3] == "00c9":
                     print(i)
-                memory.add(i[3])
+                    file.write(str(datetime.now()) + " " + str(i[2:]) + "\n")
             print("***********************")
             contents.clear()
 
     else:
-        print("error")
+        print("no packet")
+        break
 
-    # time.sleep(1.0)
-        # time.sleep(1.0)
-# while(1):
-#     message = bus.recv(0.1)
-#     bus.flush_tx_buffer()
-#     if message is not None:
-#         time.sleep(1.0)
-#         print(message)
-#         print(datetime.datetime.now())
-#         # print(time2())
+file.close()
+bus.shutdown()
+
