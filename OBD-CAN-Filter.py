@@ -32,6 +32,7 @@ while(1):
         currentTime = float(line[1])
         contents.append(line)
 
+
         if currentTime - previousTime > 0.5:
             previousTime = currentTime
 
