@@ -70,7 +70,7 @@ plt.plot(cA2)
 plt.title("2 level approximation")
 plt.subplot(428)
 plt.plot(denoised_signal)
-plt.title("denoised signal")
+plt.title("denoised signal....")
 
 plt.subplots_adjust(top=0.92, bottom=0.08, left=0.10, right=0.95, hspace=0.25,
                     wspace=0.35)
