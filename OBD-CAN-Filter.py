@@ -15,7 +15,7 @@ contents = []
 
 file = open(str(datetime.now().replace(second=0, microsecond=0)).replace(":", "-") + ".txt", "a")
 
-while(1):
+while 1:
 
     packet = bus.recv(1.0)
 
@@ -28,19 +28,51 @@ while(1):
             if len(i) != 0:
                 line.append(i)
 
-        # currentTime = float(line[1].split(".")[0])
         currentTime = float(line[1])
         contents.append(line)
 
-
-        if currentTime - previousTime > 0.5:
+        if currentTime - previousTime > 0.2:
             previousTime = currentTime
 
-            for i in reversed(contents):
-                if i[3] == "00c9":
-                    print(i)
-                    file.write(str(datetime.now()) + " " + str(i[2:]) + "\n")
+            rContents = reversed(contents)
+            data = []
+
+            # print(contents)
+            for i in rContents:
+                if i[3] == "18f0090b": # steering wheel angle
+                    data.append(str(i[8]))
+                    break
+
+            for i in rContents:
+                if i[3] == "18f0010b": # brake switch
+                    data.append(str(i[7]))
+                    break
+
+            for i in rContents:
+                if i[3] == "18ff550b": # brake strength
+                    data.append(str(i[7]))
+                    break
+
+            for i in rContents:
+                if i[3] == "0cf00300": # accelerator switch
+                    data.append(str(i[7]))
+                    break
+
+            for i in rContents:
+                if i[3] == "0cf00300": # accelerator strength
+                    data.append(str(i[8]))
+                    break
+
+            for i in rContents:
+                if i[3] == "18f00503": # gear position
+                    data.append(str(i[7]))
+                    break
+
+            file.write(str(datetime.now()) + " " + str(data) + "\n")
+
+            print(data)
             print("***********************")
+
             contents.clear()
 
     else:
