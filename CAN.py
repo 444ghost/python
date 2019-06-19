@@ -68,7 +68,9 @@ while 1:
                     data.append(str(i[7]))
                     break
 
-            file.write(str(datetime.now()) + " " + str(data) + "\n")
+            data.append("0")
+
+            file.write(str(datetime.now()) + " " + str("_".join(data)) + "\n")
 
             print(data)
             print("***********************")
