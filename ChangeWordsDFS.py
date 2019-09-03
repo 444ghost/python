@@ -42,8 +42,7 @@ def DFS(begin, target, words, index):
                 minCount = index
             elif minCount > index:
                 minCount = index
-
-                return
+            return
         
         for i in candidates:
             updatedWords = words.copy()
